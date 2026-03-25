@@ -75,6 +75,7 @@ De base, un visiteur non connecté n'accède qu'au contenu publié public
 -- ========================================
 
 -- 1. ROLES
+DROP TABLE IF EXISTS `role`;
 CREATE TABLE role (
     id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nom     VARCHAR(50)  NOT NULL,
@@ -84,6 +85,7 @@ CREATE TABLE role (
 );
 
 -- 2. DROITS
+DROP TABLE IF EXISTS `droit`;
 CREATE TABLE droit (
     id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nom VARCHAR(100) NOT NULL,
@@ -92,6 +94,7 @@ CREATE TABLE droit (
 );
 
 -- 3. LIAISON ROLE <-> DROIT
+DROP TABLE IF EXISTS `role_droit`;
 CREATE TABLE role_droit (
     role_id  INT UNSIGNED NOT NULL,
     droit_id INT UNSIGNED NOT NULL,
@@ -101,6 +104,7 @@ CREATE TABLE role_droit (
 );
 
 -- 4. UTILISATEURS
+DROP TABLE IF EXISTS `utilisateur`;
 CREATE TABLE utilisateur (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
     role_id    INT UNSIGNED NOT NULL,
@@ -116,6 +120,7 @@ CREATE TABLE utilisateur (
 );
 
 -- 5. POSTS
+DROP TABLE IF EXISTS `post`;
 CREATE TABLE post (
     id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
     utilisateur_id  INT UNSIGNED NOT NULL,
@@ -131,6 +136,7 @@ CREATE TABLE post (
 );
 
 -- 6. TAGS
+DROP TABLE IF EXISTS `tag`;
 CREATE TABLE tag (
     id  INT UNSIGNED NOT NULL AUTO_INCREMENT,
     nom VARCHAR(100) NOT NULL,
@@ -139,6 +145,7 @@ CREATE TABLE tag (
 );
 
 -- 7. LIAISON POST <-> TAG
+DROP TABLE IF EXISTS `post_tag`;
 CREATE TABLE post_tag (
     post_id INT UNSIGNED NOT NULL,
     tag_id  INT UNSIGNED NOT NULL,
@@ -148,7 +155,7 @@ CREATE TABLE post_tag (
 );
 ```
 
-### DOnnées initiales de la base.
+### Données initiales de la base.
 
 ```sql
 -- ========================================
