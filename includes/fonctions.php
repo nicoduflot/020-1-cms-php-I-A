@@ -27,17 +27,13 @@ function getUser($login, $password): bool
         return false;
     }
     
-    // Regénérer l'ID de session pour éviter la fixation de session
-    session_regenerate_id(true);
-
-    prePrint('connexion OK');
-
     $_SESSION['user_id']  = $row['id'];
     $_SESSION['nom']      = $row['nom'];
     $_SESSION['prenom']   = $row['prenom'];
     $_SESSION['role']     = $row['role'];
-
-    prePrint($_SESSION);
+    
+    // Regénérer l'ID de session pour éviter la fixation de session
+    session_regenerate_id(true);
 
     return true;
 

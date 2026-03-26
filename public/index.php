@@ -72,7 +72,7 @@ if(isset($_GET['a'])){
     </nav>
     <main class="container my-3">
         <?php
-        prePrint($_SESSION);
+        /*prePrint($_SESSION);*/
         ?>
         <section>
             <?php
