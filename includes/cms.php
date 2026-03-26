@@ -15,7 +15,6 @@ function getAllPosts(){
         <div class="row">
             <?php
             while($data = $result->fetch_assoc()){
-                /*prePrint($data);*/
                 include '../includes/templates/front-article.php';
             }
             ?>
@@ -24,9 +23,10 @@ function getAllPosts(){
     }else{
 
     }
+    closeConn($link);
 }
 
-function getArticle($id){
+function getArticle($id, $type){
     $link = openConn();
     $stmt = $link->prepare(RQPOST);
     $stmt->bind_param("s", $id);
@@ -38,8 +38,11 @@ function getArticle($id){
         <div class="row">
             <?php
             while($data = $result->fetch_assoc()){
-                /*prePrint($data);*/
-                include '../includes/templates/article.php';
+                if('read' === $type){
+                    include '../includes/templates/article.php';
+                }else{
+                    return $data;
+                }
             }
             ?>
         </div>
@@ -47,4 +50,18 @@ function getArticle($id){
     }else{
 
     }
+    
+    closeConn($link);
+}
+
+function addArticle($utilisateur_id, $titre, $slug, $body, $publie = 1){
+    $link = openConn();
+
+    $stmt = $link->prepare(PUTPOST);
+    $stmt->bind_param("isssi",$utilisateur_id, $titre, $slug, $body, $publie);
+    $stmt->execute();
+    $newId = $link->insert_id; // récupère l'id du post créé
+
+    closeConn($link);
+    return $newId;             // utile pour rediriger vers le post après création
 }

@@ -13,7 +13,7 @@ $allPosts = "
 SELECT
     p.id, 
     p.titre, 
-    SUBSTR(p.body, 1, 500) as `body`, 
+    p.body, 
     p.publie, p.cree, p.modifie,
     u.nom          AS auteur_nom,
     u.prenom       AS auteur_prenom,
@@ -34,7 +34,9 @@ LEFT JOIN tag t
 
 GROUP BY
     p.id,
-    u.id;
+    u.id 
+ORDER BY 
+    p.cree DESC; 
 ";
 $article = "
 SELECT
@@ -63,9 +65,17 @@ GROUP BY
     p.id,
     u.id;
 ";
+
+$addArticle ="
+INSERT INTO `post` 
+(`utilisateur_id`, `titre`, `slug`, `body`, `publie`) 
+VALUES 
+(?, ?, ?, ?, ?);
+";
+
 define("RQALLPOSTS", $allPosts);
 define("RQPOST", $article);
-/* RQALLPOSTS */
+define("PUTPOST", $addArticle);
 
 /*fontction de connexion à la bdd*/
 function openConn(){

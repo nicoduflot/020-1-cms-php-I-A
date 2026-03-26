@@ -8,11 +8,11 @@ $conn = openConn();
 //connexion($conn, 'nikko', 'administrateur');
 
 $a = null;
-if(isset($_GET['a'])){
+if (isset($_GET['a'])) {
     $a = $_GET['a'];
 }
 
-//prePrint($_COOKIE);
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,12 +23,23 @@ if(isset($_GET['a'])){
     <title>CMS</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <script src="./js/bootstrap.bundle.js"></script>
+    <script src="./js/dfd-script.js"></script>
+    <?php
+    if( (isset($_GET['a']) && 'ajout-article' === $_GET['a']) || ((isset($_GET['a']) && 'modif-article' === $_GET['a']) && (isset($_GET['id']) && '' !== $_GET['id'])) ){
+    ?>
+    <link rel="stylesheet" href="./js/ckeditor5/ckeditor5.css" />
+    <script type="module" src="./js/launchEditor.js"></script>
+    <?php
+    }
+    ?>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#"><h1>Mon CMS</h1></a>
+            <a class="navbar-brand" href="#">
+                <h1>Mon CMS</h1>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -54,7 +65,23 @@ if(isset($_GET['a'])){
                                 <hr class="dropdown-divider">
                             </li>
                             -->
-                            <li><a class="dropdown-item" href="./?a=connexion">connexion</a></li>
+                            <?php
+                            if (isset($_SESSION['user_id'])) {
+                            ?>
+                                <?php if (isset($_SESSION['user_id']) && in_array($_SESSION['role'], ['admin', 'webmaster'])): ?>
+                                    <li><a class="dropdown-item" href="./?a=ajout-article">Ajouter un article</a></li>
+                                <?php endif; ?>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="./?a=deconnexion">Déconnexion (<?= htmlspecialchars($_SESSION['prenom']) ?>)</a></li>
+                            <?php
+                            } else {
+                            ?>
+                                <li><a class="dropdown-item" href="./?a=connexion">Connexion</a></li>
+                            <?php
+                            }
+                            ?>
                         </ul>
                     </li>
                     <!--
@@ -71,19 +98,35 @@ if(isset($_GET['a'])){
         </div>
     </nav>
     <main class="container my-3">
-        <?php
-        /*prePrint($_SESSION);*/
-        ?>
         <section>
             <?php
-            switch($a){
+            switch ($a) {
                 case 'connexion':
+                    // Mémoriser la page précédente si elle existe et n'est pas la connexion elle-même
+                    if (
+                        !isset($_SESSION['redirect_after_login']) &&
+                        isset($_SERVER['HTTP_REFERER']) &&
+                        strpos($_SERVER['HTTP_REFERER'], 'connexion') === false
+                    ) {
+                        $_SESSION['redirect_after_login'] = $_SERVER['HTTP_REFERER'];
+                    }
                     include '../includes/templates/connexion.php';
-                break;
+                    break;
+                case 'deconnexion':
+                    include '../includes/templates/deconnexion.php';
+                    break;
                 case 'article':
-                    getArticle($_GET['id']);
+                    getArticle($_GET['id'], 'read');
+                    break;
+                case 'ajout-article':
+                case 'modif-article':
+                    if(!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'webmaster'])){
+                        header('Location: /');
+                        exit;
+                    }
+                    include '../includes/templates/ajout-modif-article.php';
                 break;
-                default :
+                default:
                     getIndex();
             }
             ?>

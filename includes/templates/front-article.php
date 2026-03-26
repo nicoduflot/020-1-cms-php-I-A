@@ -1,4 +1,4 @@
-<div class="col-md-6 col-lg-4">
+<div class="col-md-6 col-lg-4 my-3">
     <article>
         <header>
             <h2 class="text-truncate"><?php echo $data['titre'] ?></h2>

@@ -1,11 +1,18 @@
 <?php
 $formStatus = 0;
-if ((isset($_POST['login'])) && (isset($_POST['password']) )) {
+if ((isset($_POST['login'])) && (isset($_POST['password']))) {
     $user = getUser($_POST['login'], $_POST['password']);
-    if(!$user){
+    if (!$user) {
         $formStatus = 2;
-    }else{
+    } else {
         $formStatus = 1;
+        $redirect = '/'; // par défaut
+        if (isset($_SESSION['redirect_after_login'])) {
+            $redirect = $_SESSION['redirect_after_login'];
+            unset($_SESSION['redirect_after_login']); // on nettoie
+        }
+        header('Location: ' . $redirect);
+        exit; // ← toujours, sans exception
     }
 }
 ?>
