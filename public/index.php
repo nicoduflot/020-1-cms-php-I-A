@@ -1,9 +1,5 @@
 <?php
-session_start();
-require_once './includes/sql.php';
-require_once './includes/functions.php';
-require_once './includes/cms.php';
-require_once './includes/autentification.php';
+require_once '../includes/init.php';
 
 $conn = openConn();
 
@@ -75,11 +71,14 @@ if(isset($_GET['a'])){
         </div>
     </nav>
     <main class="container my-3">
+        <?php
+        prePrint($_SESSION);
+        ?>
         <section>
             <?php
             switch($a){
                 case 'connexion':
-                    include './includes/templates/connexion.php';
+                    include '../includes/templates/connexion.php';
                 break;
                 case 'article':
                     getArticle($_GET['id']);

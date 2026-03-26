@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Bloquer l'accès direct aux fichiers sensibles
+<Files "config.php">
+    Require all denied
+</Files>
+
+# Rediriger tout vers public/index.php
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]
