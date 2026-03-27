@@ -24,7 +24,7 @@ import {
 let editor = null;
 
 loaded(function () {
-    const postData = '<p>Edit here !</p>';
+    const postData = q('#ckcontent').value;
     /* chargement de l'éditeur classique */
     /* chargement de l'éditeur classique */
     ClassicEditor
@@ -125,6 +125,8 @@ loaded(function () {
         console.error(error);
         return false;
     });
+
+    console.log(q('#ckcontent').value);
     
     q('#valid').addEventListener('click', function(event){
         const editorData = editor.getData();

@@ -65,3 +65,14 @@ function addArticle($utilisateur_id, $titre, $slug, $body, $publie = 1){
     closeConn($link);
     return $newId;             // utile pour rediriger vers le post après création
 }
+
+function modArticle($titre, $slug, $body, $publie, $id){
+    $link = openConn();
+
+    $stmt = $link->prepare(MODPOST);
+    $stmt->bind_param("sssii", $titre, $slug, $body, $publie, $id);
+    $stmt->execute();
+
+    closeConn($link);
+    return true;
+}

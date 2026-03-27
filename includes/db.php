@@ -73,9 +73,22 @@ VALUES
 (?, ?, ?, ?, ?);
 ";
 
+$modArticle = "
+UPDATE  
+    `post` 
+SET 
+    `titre` = ?,
+    `slug` = ?, 
+    `body` = ?,
+    `publie` = ? 
+WHERE 
+    `post`.`id` = ?;
+";
+
 define("RQALLPOSTS", $allPosts);
 define("RQPOST", $article);
 define("PUTPOST", $addArticle);
+define("MODPOST", $modArticle);
 
 /*fontction de connexion à la bdd*/
 function openConn(){
