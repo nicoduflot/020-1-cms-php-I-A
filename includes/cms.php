@@ -66,13 +66,24 @@ function addArticle($utilisateur_id, $titre, $slug, $body, $publie = 1){
     return $newId;             // utile pour rediriger vers le post après création
 }
 
-function modArticle($titre, $slug, $body, $publie, $id){
+function modArticle($titre, $slug, $body, $publie, $id): bool
+{
     $link = openConn();
 
     $stmt = $link->prepare(MODPOST);
     $stmt->bind_param("sssii", $titre, $slug, $body, $publie, $id);
     $stmt->execute();
 
+    closeConn($link);
+    return true;
+}
+
+function delArticle($id): bool
+{
+    $link = openConn();
+    $stmt = $link->prepare(DELPOST);
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
     closeConn($link);
     return true;
 }

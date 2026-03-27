@@ -122,9 +122,16 @@ if (isset($_GET['a'])) {
                 case 'modif-article':
                     if(!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'webmaster'])){
                         header('Location: /');
-                        exit;
+                    exit;
                     }
                     include '../includes/templates/ajout-modif-article.php';
+                    break;
+                case 'del-article':
+                    if(!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'webmaster'])){
+                        header('Location: /');
+                    exit;
+                    }
+                    include '../includes/templates/del-article.php';
                 break;
                 default:
                     getIndex();

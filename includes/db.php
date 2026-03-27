@@ -85,10 +85,16 @@ WHERE
     `post`.`id` = ?;
 ";
 
+$delArticle = "
+DELETE FROM `post` 
+WHERE `id` = ?;
+";
+
 define("RQALLPOSTS", $allPosts);
 define("RQPOST", $article);
 define("PUTPOST", $addArticle);
 define("MODPOST", $modArticle);
+define("DELPOST", $delArticle);
 
 /*fontction de connexion à la bdd*/
 function openConn(){

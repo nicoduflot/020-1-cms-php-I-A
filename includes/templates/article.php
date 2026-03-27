@@ -17,6 +17,9 @@
                 <div class="col">
                     <a href="./?a=modif-article&article=mod&id=<?php echo $data['id'] ?>"><button class="btn btn-outline-primary btn-sm">Modifier l'article</button></a>
                 </div>
+                <div class="col">
+                    <a href="./?a=del-article&article=del&id=<?php echo $data['id'] ?>"><button class="btn btn-outline-danger btn-sm">Supprimer l'article</button></a>
+                </div>
             <?php
             }
             ?>

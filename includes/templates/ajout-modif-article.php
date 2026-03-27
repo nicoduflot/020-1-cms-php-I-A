@@ -40,7 +40,7 @@ if (isset($_POST['article']) && $_POST['article'] === 'mod') {
 }
 if (!isset($_POST['article'])) {
 ?>
-    <form method="post" id="form-article">
+    <form method="post" id="form-article" class="row">
         <div class="col-md-8 offset-md-2">
             <div style="">
                 <input type="hidden" name="ckcontent" id="ckcontent" value="<?= htmlspecialchars($body) ?>" />
