@@ -1,0 +1,7 @@
+# Interdire l'accès direct si pas de session active
+# (la vraie vérification reste côté PHP, le htaccess est la première barrière)
+RewriteEngine On
+
+# Bloquer tout accès direct sans passer par PHP
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [L]

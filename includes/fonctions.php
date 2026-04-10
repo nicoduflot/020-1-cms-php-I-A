@@ -83,3 +83,33 @@ function makeSlug($text)
     return $text;
 }
 
+function verifierRole(array $rolesAutorises): void {
+    if(!isset($_SESSION['user_id']) || 
+       !in_array($_SESSION['role'], $rolesAutorises)){
+        header('Location: /');
+        exit;
+    }
+}
+
+function normaliserEtiquette(string $tag): string {
+    $tag = strtolower(trim($tag));
+    // Supprimer les accents
+    $tag = transliterator_transliterate('Any-Latin; Latin-ASCII', $tag);
+    // Ne garder que lettres, chiffres et tirets
+    $tag = preg_replace('/[^a-z0-9\-]/', '-', $tag);
+    $tag = preg_replace('/-+/', '-', $tag); // tirets multiples
+    return trim($tag, '-');
+}
+
+function decouperEtiquettes(string $saisie): array {
+    $tags = explode(',', $saisie);
+    $result = [];
+    foreach($tags as $tag){
+        $tag = normaliserEtiquette($tag);
+        if($tag !== ''){
+            $result[] = $tag;
+        }
+    }
+    return array_unique($result);
+}
+

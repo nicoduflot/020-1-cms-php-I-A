@@ -15,7 +15,7 @@ function getAllPosts(){
         <div class="row">
             <?php
             while($data = $result->fetch_assoc()){
-                include '../includes/templates/front-article.php';
+                include '../includes/templates/frontoffice/front-article.php';
             }
             ?>
         </div>
@@ -39,7 +39,7 @@ function getArticle($id, $type){
             <?php
             while($data = $result->fetch_assoc()){
                 if('read' === $type){
-                    include '../includes/templates/article.php';
+                    include '../includes/templates/frontoffice/article.php';
                 }else{
                     return $data;
                 }
@@ -86,4 +86,28 @@ function delArticle($id): bool
     $stmt->execute();
     closeConn($link);
     return true;
+}
+
+function verifierConflitsEtiquettes(array $tagsNormalises): array {
+    $link = openConn();
+    $conflits = [];
+
+    foreach($tagsNormalises as $tag){
+        $stmt = $link->prepare("
+            SELECT id, nom FROM tag
+            WHERE LOWER(nom) LIKE ?
+            AND nom != ?
+        ");
+        $recherche = '%' . $tag . '%';
+        $stmt->bind_param("ss", $recherche, $tag);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        while($row = $result->fetch_assoc()){
+            $conflits[$tag][] = $row; // étiquettes similaires trouvées
+        }
+    }
+
+    closeConn($link);
+    return $conflits; // vide = pas de conflit
 }

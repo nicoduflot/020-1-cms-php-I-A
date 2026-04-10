@@ -20,7 +20,7 @@ if (isset($_GET['a'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMS</title>
+    <title>Mon CMS - DWWM</title>
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <script src="./js/bootstrap.bundle.js"></script>
     <script src="./js/dfd-script.js"></script>
@@ -70,6 +70,7 @@ if (isset($_GET['a'])) {
                             ?>
                                 <?php if (isset($_SESSION['user_id']) && in_array($_SESSION['role'], ['admin', 'webmaster'])): ?>
                                     <li><a class="dropdown-item" href="./?a=ajout-article">Ajouter un article</a></li>
+                                    <li><a class="dropdown-item" href="./admin/">Backoffice</a></li>
                                 <?php endif; ?>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -110,10 +111,10 @@ if (isset($_GET['a'])) {
                     ) {
                         $_SESSION['redirect_after_login'] = $_SERVER['HTTP_REFERER'];
                     }
-                    include '../includes/templates/connexion.php';
+                    include '../includes/templates/frontoffice/connexion.php';
                     break;
                 case 'deconnexion':
-                    include '../includes/templates/deconnexion.php';
+                    include '../includes/templates/frontoffice/deconnexion.php';
                     break;
                 case 'article':
                     getArticle($_GET['id'], 'read');
@@ -124,14 +125,14 @@ if (isset($_GET['a'])) {
                         header('Location: /');
                     exit;
                     }
-                    include '../includes/templates/ajout-modif-article.php';
+                    include '../includes/templates/frontoffice/ajout-modif-article.php';
                     break;
                 case 'del-article':
                     if(!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['admin', 'webmaster'])){
                         header('Location: /');
                     exit;
                     }
-                    include '../includes/templates/del-article.php';
+                    include '../includes/templates/frontoffice/del-article.php';
                 break;
                 default:
                     getIndex();
