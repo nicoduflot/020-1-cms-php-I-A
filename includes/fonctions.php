@@ -58,6 +58,28 @@ function deconnecterUtilisateur(): void
     session_destroy();
 }
 
+function makeUniqueSlug(string $slug, int $excludeId = 0): string
+{
+    $link    = openConn();
+    $base    = $slug;
+    $counter = 1;
+
+    do {
+        $stmt = $link->prepare("SELECT id FROM post WHERE slug = ? AND id != ?");
+        $stmt->bind_param("si", $slug, $excludeId);
+        $stmt->execute();
+        $exists = $stmt->get_result()->fetch_assoc();
+
+        if($exists){
+            $slug = $base . '-' . $counter;
+            $counter++;
+        }
+    } while($exists);
+
+    closeConn($link);
+    return $slug;
+}
+
 function makeSlug($text)
 {
     /* convertir en minuscule */
